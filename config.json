@@ -1,0 +1,15 @@
+{
+  "Mobile_Status": true,
+  "Status": "idle",
+  "Invite_Guild_ID": 1214280471496892516,
+  "Status_Texts": ["Looking For Members", "DM For J4J", "Doing J4J At The Moment", "J4J Right Now!"],
+  "Status_Emojis": ["🙏", "😃", "😶", "👋"],
+  "Guild_ID": 1243267794892619916,
+  "J4J_Channel_Names": ["⚡・j4j・06"],
+  "Delay": 39,
+  "Channel_Messages": ["j4j dm me pls", "j4j dm me" ,"j4j dm" ,"j4j dm fasttt" ,"j4j no bots" ,"j4j old accounts"  ,"j4j fast" ,"j4j dm me guys" ,"j4j quick", "j4j fast bro"],
+  "Done_Messages": ["Dn pls join and <#kanal-id> verify", "dn you? <#kanal-id> pls dont forget verify!" , "Dn pls <#kanal-id> verify!" ,"Done  <#kanal-id> please verify!"],
+  "DM_Messages": ["j4j first you https://discord.gg/Yv6GTfkXfM "," hi sir j4j https://discord.gg/Yv6GTfkXfM ", "j4j first you https://discord.gg/Yv6GTfkXfM ","j4j gel  https://discord.gg/Yv6GTfkXfM "],
+  "Webhook": "https://discord.com/api/webhooks/1378009910654013491/wceY9pkc5o2AoZc5j-1_mQE5wHxluN-9hEDmpLiJaxguMjPdAV4zmWNqTvA9NB1tAg4g",
+  "WebServer": true
+}

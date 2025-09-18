@@ -1,0 +1,8 @@
+discord.py-self==1.7.3
+discord_self==0.1.2
+aiohttp==3.8.4
+colorama==0.4.6
+httpx==0.24.1
+flask==2.3.3
+pyfiglet==0.8.post1
+websocket-client==1.6.4

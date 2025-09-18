@@ -85,7 +85,7 @@ class colors:
 
     def msg(txt, idx):
         return f"{Fore.LIGHTBLUE_EX}[{idx+1}]{Fore.RESET}{Style.BRIGHT} {txt}{Fore.RESET}{Style.NORMAL}"
-
+    
     def ask2(qus):
         print(f"{Fore.LIGHTMAGENTA_EX}[+]{Fore.RESET}{Style.BRIGHT} {qus}{Fore.RESET}{Style.NORMAL}")
 
@@ -114,7 +114,7 @@ async def start(self, token: str, *, reconnect: bool = True) -> None:
             colors.error(f"❌ INVALID TOKEN -> {token[:12]}*****!")
             colors.warning("⚠️ User token'ını yeniden alın. F12 -> Network -> XHR -> Authorization header'dan alabilirsiniz.")
         elif "forbidden" in str(e).lower():
-            colors.error(f"🚫 User Account Disabled/Suspended -> {token[:12]}*****!")
+            colors.error(f"🚫 USER ACCOUNT BANNED -> {token[:12]}*****!")
         else:
             colors.warning("🔧 Başka bir hata oluştu. (Rate Limit, Timeout, Bağlantı sorunu vs.)")
 
@@ -173,9 +173,8 @@ class BotCog(commands.Cog):
                             async with channel.typing():
                                 await asyncio.sleep(random.randint(5, 15))
                                 await channel.send(msg)
-                            # ✅ MESAJ BAŞARIYLA GÖNDERİLDİ BİLDİRİMİ
-                            colors.sucess(f"✅ MESAJ GÖNDERİLDİ -> {msg} | Kanal: {channel.name} | Bot: {self.bot.user}")
-                            logger.log(f"✅ MESAJ GÖNDERİLDİ -> {msg} | Kanal: {channel.name} | Bot: {self.bot.user}")
+                                logger.log(f"📤 Successfully Sent -> {msg} In {channel.name} From {self.bot.user}")
+                                colors.sucess(f"📤 Successfully Sent -> {msg} In {channel.name} From {self.bot.user}")
         except Exception as e:
             colors.error(f"error -> {e}")
             logger.log(f"error -> {e}, @")
@@ -204,30 +203,26 @@ class BotCog(commands.Cog):
                 await asyncio.sleep(random.randint(5, 15))
                 msg = vary_msg(random.choice(dmsgs))
                 await message.channel.send(msg)
-                # ✅ DM MESAJI GÖNDERİLDİ BİLDİRİMİ
-                colors.sucess(f"✅ DM GÖNDERİLDİ -> {msg} | Kullanıcı: {message.author} | Bot: {self.bot.user}")
 
             # İkinci cevap
             async with message.channel.typing():
                 await asyncio.sleep(random.randint(12, 35))
                 done_msg = vary_msg(random.choice(dnmsgs))
                 await message.channel.send(done_msg)
-                # ✅ DM MESAJI GÖNDERİLDİ BİLDİRİMİ
-                colors.sucess(f"✅ DM GÖNDERİLDİ -> {done_msg} | Kullanıcı: {message.author} | Bot: {self.bot.user}")
 
-            colors.sucess(f"✅ DM TAMAMLANDI -> {message.author} | Bot: {self.bot.user}")
+            colors.sucess(f"📩 Received DM, replied to {message.author} from {self.bot.user}")
 
         except Exception as e:
-            colors.error(f"❌ DM HATASI -> {e}")
-            logger.log(f"❌ DM HATASI -> {e}, @everyone")
+            colors.error(f"error -> {e}")
+            logger.log(f"error -> {e}, @everyone")
     
     @commands.Cog.listener()
     async def on_member_join(self, member):
         id = member.guild.id
         if id != invg:
             return
-        colors.sucess(f"✅ {member} sunucuya katıldı!")
-        logger.log(f"✅ {member} sunucuya katıldı!")
+        colors.sucess(f"🎉 {member} Just Joined Our Server!")
+        logger.log(f"🎉 {member} Just Joined Our Server!")
         
     @commands.Cog.listener("on_connect")
     async def on_connect_two(self):
@@ -235,22 +230,22 @@ class BotCog(commands.Cog):
         
     @commands.Cog.listener()
     async def on_disconnect(self):
-        colors.warning("🔌 Discord bağlantısı kesildi.")
-        logger.log("🔌 Discord bağlantısı kesildi.")
+        colors.warning("🔌 Disconnected From Discord.")
+        logger.log("🔌 Disconnected from Discord.")
         
     @commands.Cog.listener()
     async def on_ready(self):
         global DB_RESET
-        colors.sucess(f"✅ Bağlantı başarılı -> {self.bot.user}!")
-        logger.log(f"✅ Bağlantı başarılı -> {self.bot.user}!")
+        colors.sucess(f"✅ Connected To {self.bot.user}!")
+        logger.log(f"✅ Connected To {self.bot.user}!")
         
         # Start tasks
         try:
             if not self.activity_task.is_running():
                 self.activity_task.start()
-            colors.sucess(f"✅ Görevler başlatıldı -> {self.bot.user}")
+            colors.sucess(f"🚀 Tasks Were Started For {self.bot.user}")
         except Exception as e:
-            colors.warning(f"⚠️ Görev başlatılamadı: {e}")
+            colors.warning(f"⚠️ Could not start activity task: {e}")
         
         if DB_RESET:
             return
@@ -267,18 +262,29 @@ for token in tokens:
 
 tokens = cleaned_tokens
 
+# Render için Fake Web Service
 app = Flask(__name__)
 
-@app.route("/")
-def index():
-    return "J4J Bot, 24/7 Web Server"
+@app.route('/')
+def home():
+    return "🤖 J4J Bot - 24/7 Aktif"
 
-def run_app():
-    app.run(port=8080, host="0.0.0.0")
+@app.route('/health')
+def health():
+    return "✅ Bot Sağlıklı Çalışıyor"
+
+@app.route('/status')
+def status():
+    return json.dumps({"status": "online", "bots": len(tokens)})
+
+def run_web_server():
+    app.run(host='0.0.0.0', port=8080, debug=False)
 
 if wb_:
-    threading.Thread(target=run_app).start()
+    web_thread = threading.Thread(target=run_web_server, daemon=True)
+    web_thread.start()
     time.sleep(2)
+    colors.sucess("🌐 Web Server Başlatıldı: http://0.0.0.0:8080")
 
 bnr = pyfiglet.figlet_format("J4J BOT")
 colors.banner(bnr+"\n")
@@ -305,8 +311,8 @@ async def run_bots():
 try:
     loop.run_until_complete(run_bots())
 except KeyboardInterrupt:
-    colors.warning("⏹️ Bot kullanıcı tarafından durduruldu")
+    colors.warning("⏹️ Bot stopped by user")
 except Exception as e:
-    colors.error(f"❌ Bot çalıştırma hatası: {e}")
+    colors.error(f"❌ Error running bots: {e}")
 finally:
     loop.close()
